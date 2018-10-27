@@ -18,9 +18,9 @@ class WordCloud extends Component {
   }
 
   componentDidMount() {
+    this.updateDimensions()
     this.fetchData()
     window.addEventListener("resize", this.updateDimensions)
-    this.updateDimensions()
   }
 
   componentDidUpdate(prevProps) {
@@ -43,7 +43,7 @@ class WordCloud extends Component {
   }
 
   updateDimensions = () => {
-    this.setState({width: window.innerWidth-30})
+    this.setState({width: window.innerWidth-20})
   }
 
   onWordClick = word => {

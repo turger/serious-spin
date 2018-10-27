@@ -1,6 +1,8 @@
 .GroupSelector {
+  width: 90%;
   padding: 20px;
 }
+
 .loader,
 .loader:before,
 .loader:after {
