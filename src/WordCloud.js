@@ -4,7 +4,6 @@ import {mapCloudWordsPerYear} from './utils/utils'
 import Cloud from 'react-d3-cloud'
 import './WordCloud.css'
 
-const fontSizeMapper = word => Math.log2(word.value) * 5
 const rotate = word => word.value % 45
 
 class WordCloud extends Component {
@@ -27,6 +26,13 @@ class WordCloud extends Component {
     if(prevProps.selectedYear !== this.props.selectedYear || prevProps.selectedGroup !== this.props.selectedGroup) {
       this.fetchData()
     }
+
+  }
+
+  fontSizeMapper = word => {
+    const wordAmount = Object.keys(this.state.wordData).length
+    const num = 10-Math.ceil(wordAmount/100)
+    return Math.ceil(Math.log2(word.value) * num)
   }
 
   componentWillUnmount() {
@@ -37,7 +43,7 @@ class WordCloud extends Component {
     const selectedYear = this.props.selectedYear || '2018'
     const selectedGroup = this.props.selectedGroup || '00 General Terms'
     getFennicaGroupedData(selectedGroup, selectedYear).then(wordData => {
-      this.setState({wordData})
+      this.setState({wordData: mapCloudWordsPerYear(wordData)})
     })
 
   }
@@ -52,13 +58,13 @@ class WordCloud extends Component {
   }
 
   render() {
-    if (!this.state.wordData) return null
-    const data = mapCloudWordsPerYear(this.state.wordData)
+    const {wordData} = this.state
+    if (!wordData) return null
     return (
       <div className="WordCloud">
         <Cloud
-          data={data}
-          fontSizeMapper={fontSizeMapper}
+          data={wordData}
+          fontSizeMapper={this.fontSizeMapper}
           rotate={rotate}
           onWordClick={this.onWordClick}
           padding={10}
