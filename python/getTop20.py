@@ -48,6 +48,7 @@ def setTop20OfYear(json_data, year):
 	top20 = getTop20OfYear(json_data, year)
 	year_top_20 = {}
 	for top_value in top20:
+		if (len(top_value[0]) > 0):
 		year_top_20[top_value[0]] = top_value[1]
 	json_data[year] = year_top_20
 	return True
