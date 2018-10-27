@@ -33,10 +33,6 @@ export default class MyComponent extends React.Component {
     })
   }
 
-  handlePointHover = (activePoint) => {
-    console.log(activePoint)
-  }
-
   render() {
     const {activePoint, data} = this.state
     if (!data) return null
@@ -46,7 +42,6 @@ export default class MyComponent extends React.Component {
           <div className='Chart__selectedWord'>Selected word: {this.props.selectedWord}</div>
           <LineChart
           data={data.map((point) => ({...point, active: point.x === activePoint.x ? true : false}))}
-          pointsOnHover={this.handlePointHover}
           viewBoxHeight={125}
           pathColor='#fff'
           />
