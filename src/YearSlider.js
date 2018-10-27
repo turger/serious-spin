@@ -7,7 +7,7 @@ class YearSlider extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      minYear: 1998,
+      minYear: 1980,
       maxYear: 2018
     }
   }
