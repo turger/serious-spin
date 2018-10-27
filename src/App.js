@@ -4,13 +4,15 @@ import YearSlider from './YearSlider'
 import WordCloud from './WordCloud'
 import GroupSelector from './GroupSelector'
 import './App.css'
+import Chart from './chart/Chart.js'
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
       selectedYear: 2018,
-      selectedGroup: '00 General Terms'
+      selectedGroup: '00 General Terms',
+      selectedWord: false
     }
   }
 
@@ -21,6 +23,8 @@ class App extends Component {
     return(
       <div className="App">
         <Header/>
+        <Chart
+          word={'positivity'} />
         <YearSlider
           setSelectedYear={this.setSelectedYear}
           selectedYear={this.state.selectedYear}
