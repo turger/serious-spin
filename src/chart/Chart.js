@@ -20,11 +20,11 @@ export default class Chart extends React.Component {
 	    this.fetchData()
 	}
 
-	/*componentDidUpdate(prevProps) {
-	    if(prevProps.selectedYear !== this.props.selectedYear || prevProps.selectedGroup !== this.props.selectedGroup) {
+	componentDidUpdate(prevProps) {
+	    if(prevProps.word !== this.props.selectedWord) {
 	      this.fetchData()
 	    }
-	}*/
+	}
 
 	fetchData() {
 	    getFennicaGraphData().then((wordData) => {
@@ -66,7 +66,7 @@ export default class Chart extends React.Component {
 			scaleGridLineColor : "rgba(0,0,0,.05)",
 
 			//Number - Width of the grid lines
-			scaleGridLineWidth : 1,
+			scaleGridLineWidth : 2,
 
 			//Boolean - Whether to show horizontal lines (except X axis)
 			scaleShowHorizontalLines: true,
@@ -84,7 +84,7 @@ export default class Chart extends React.Component {
 			pointDot : true,
 
 			//Number - Radius of each point dot in pixels
-			pointDotRadius : 4,
+			pointDotRadius : 6,
 
 			//Number - Pixel width of point dot stroke
 			pointDotStrokeWidth : 1,
@@ -113,7 +113,7 @@ export default class Chart extends React.Component {
     			data={this.getData()} 
     			options={this.getChartOptions()} 
     			width="1200" 
-    			height="250" />
+    			height="125" />
     	)
 	}
 }

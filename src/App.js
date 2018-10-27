@@ -18,13 +18,17 @@ class App extends Component {
 
   setSelectedYear = selectedYear => this.setState({selectedYear})
   setSelectedGroup = selectedGroup => this.setState({selectedGroup})
+  setSelectedWord = selectedWord => this.setState({selectedWord})
 
   render() {
     return(
       <div className="App">
         <Header/>
         <Chart
-          word={'positivity'} />
+          word={this.state.selectedWord}
+          selectedYear={this.state.selectedYear}
+          selectedGroup={this.state.selectedGroup}
+        />
         <YearSlider
           setSelectedYear={this.setSelectedYear}
           selectedYear={this.state.selectedYear}
@@ -36,6 +40,7 @@ class App extends Component {
         <WordCloud
           selectedYear={this.state.selectedYear}
           selectedGroup={this.state.selectedGroup}
+          setSelectedWord={this.setSelectedWord}
         />
       </div>
     )
