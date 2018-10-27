@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Header from './Header'
 import YearSlider from './YearSlider'
 import WordCloud from './WordCloud'
+import GroupSelector from './GroupSelector'
 import './App.css'
 
 class App extends Component {
@@ -22,9 +23,15 @@ class App extends Component {
         <Header/>
         <YearSlider
           setSelectedYear={this.setSelectedYear}
+          selectedYear={this.state.selectedYear}
+        />
+        <GroupSelector
+          setSelectedGroup={this.setSelectedGroup}
+          selectedGroup={this.state.selectedGroup}
         />
         <WordCloud
           selectedYear={this.state.selectedYear}
+          selectedGroup={this.state.selectedGroup}
         />
       </div>
     )

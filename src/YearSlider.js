@@ -7,19 +7,18 @@ class YearSlider extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedYear: 1999,
       minYear: 1998,
       maxYear: 2018
     }
   }
 
   onSliderChange = (selectedYear) => {
-    this.setState({selectedYear})
     this.props.setSelectedYear(selectedYear)
   }
 
   getMarks = () => {
-    const {minYear, maxYear, selectedYear} = this.state
+    const {minYear, maxYear} = this.state
+    const {selectedYear} = this.props
     const marks = {}
     for (let i = minYear; i <= maxYear; i++) {
       if([minYear, maxYear, selectedYear].includes(i)) {
@@ -32,14 +31,14 @@ class YearSlider extends Component {
   }
 
   render() {
-  const {selectedYear} = this.state
-    console.log(selectedYear)
+    const {minYear, maxYear} = this.state
+    const {selectedYear} = this.props
     return (
       <div className='YearSlider'>
         <Slider
-          min={1999}
-          max={2018}
-          defaultValue={2018}
+          min={minYear}
+          max={maxYear}
+          defaultValue={selectedYear}
           trackStyle={{ backgroundColor: 'white' }}
           activeDotStyle={{ borderColor: 'white' }}
           marks={this.getMarks()}

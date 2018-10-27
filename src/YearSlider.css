@@ -1,3 +1,7 @@
 .YearSlider {
   padding: 20px;
 }
+
+.rc-slider-mark-text, .rc-slider-mark-text-active {
+  color: #d2d6e0 !important;
+}
