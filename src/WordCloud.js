@@ -27,7 +27,6 @@ class WordCloud extends Component {
       this.setState({loading: true})
       this.fetchData()
     }
-
   }
 
   fontSizeMapper = word => {
@@ -69,7 +68,7 @@ class WordCloud extends Component {
 
   onWordClick = word => {
     const link = `https://finna.fi/Search/Results?limit=0&type=AllFields&filter%5B%5D=~building%3A%221%2FNLF%2Farto%2F%22&lookfor0[]=${word.text}`
-    this.props.setSelectedWord(word.text);
+    this.props.setSelectedWord(word.text)
     window.open(link, '_blank')
   }
 

@@ -1,0 +1,10 @@
+.Chart {
+  height: auto;
+  width: 93vw;
+  margin-left: -40px;
+}
+
+.Chart__selectedWord {
+  padding: 20px 0;
+  color: #fff;
+}

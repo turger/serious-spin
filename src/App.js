@@ -12,7 +12,7 @@ class App extends Component {
     this.state = {
       selectedYear: 2018,
       selectedGroup: '00 General Terms',
-      selectedWord: false
+      selectedWord: null
     }
   }
 
@@ -23,11 +23,11 @@ class App extends Component {
   render() {
     return(
       <div className="App">
-        <Header/>
+        <Header
+          selectedWord={this.state.selectedWord}
+        />
         <Chart
-          word={this.state.selectedWord}
-          selectedYear={this.state.selectedYear}
-          selectedGroup={this.state.selectedGroup}
+          selectedWord={this.state.selectedWord}
         />
         <YearSlider
           setSelectedYear={this.setSelectedYear}
