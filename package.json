@@ -5,6 +5,7 @@
   "dependencies": {
     "firebase": "^5.5.5",
     "lodash": "^4.17.11",
+    "rc-slider": "^8.6.3",
     "react": "^16.5.2",
     "react-d3-cloud": "^0.6.0",
     "react-dom": "^16.5.2",

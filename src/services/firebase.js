@@ -12,5 +12,8 @@ const config = {
 
 const fb = firebase.initializeApp(config)
 
-export const getAllData = () =>
-  fb.database().ref('/').once('value').then((snapshot) => snapshot.val())
+export const getFennicaGroupedData = (group, year) =>
+  fb.database().ref(`fennica-grouped/${group}/${year}`).once('value').then((snapshot) => snapshot.val())
+
+export const getFennicaAllData = (year) =>
+  fb.database().ref(`fennica-all${year}`).once('value').then((snapshot) => snapshot.val())

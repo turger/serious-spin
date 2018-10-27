@@ -1,28 +1,49 @@
 import React, { Component } from 'react'
-import {getAllData} from './services/firebase'
-import {mapCloudWords} from './utils/utils'
+import {getFennicaGroupedData ,getFennicaAllData} from './services/firebase'
+import {mapCloudWordsPerYear} from './utils/utils'
 import Cloud from 'react-d3-cloud'
+import './WordCloud.css'
 
-const fontSizeMapper = word => Math.log2(word.value) * 5;
-const rotate = word => word.value % 360;
+const fontSizeMapper = word => Math.log2(word.value) * 5
+const rotate = word => word.value % 45
 
 class WordCloud extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      wordData: null
+      wordData: null,
+      width: 500,
+      height: 500
     }
   }
 
   componentDidMount() {
-    getAllData().then(wordData =>
-      this.setState({wordData})
-    )
+    const selectedYear = this.props.selectedYear || '2018'
+    const selectedGroup = this.props.selectedGroup || '00 General Terms'
+    if (selectedGroup === 'allGroups') {
+      getFennicaAllData(selectedYear).then(wordData =>
+        this.setState({wordData})
+      )
+    } else {
+      getFennicaGroupedData(selectedGroup, selectedYear).then(wordData =>
+        this.setState({wordData})
+      )
+    }
+    window.addEventListener("resize", this.updateDimensions)
+    this.updateDimensions()
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions)
+  }
+
+  updateDimensions = () => {
+    this.setState({width: window.innerWidth})
   }
 
   render() {
     if (!this.state.wordData) return null
-    const data = mapCloudWords(this.state.wordData, [], 2017, 2018)
+    const data = mapCloudWordsPerYear(this.state.wordData)
     return (
       <div className="WordCloud">
         <Cloud
@@ -30,6 +51,9 @@ class WordCloud extends Component {
           fontSizeMapper={fontSizeMapper}
           rotate={rotate}
           onWordClick={(word) => console.log('wordClick', word)}
+          padding={10}
+          width={this.state.width}
+          height={this.state.height}
         />
       </div>
     )
