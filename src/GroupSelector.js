@@ -13,23 +13,29 @@ class GroupSelector extends Component {
   }
 
   componentDidMount() {
-    getAllGroups().then(groupNames => {
-      const groupOptions = groupNames.map(groupName => ({ value: groupName, label: groupName }))
+    const localStorageOptions = localStorage.getItem('wordCloud-groupOptions')
+    if (localStorageOptions) {
+      const groupOptions = JSON.parse(localStorageOptions)
       this.setState({groupOptions, loading: false})
-    })
+    } else {
+      getAllGroups().then(groupNames => {
+        const groupOptions = groupNames.map(groupName => ({ value: groupName, label: groupName }))
+        this.setState({groupOptions, loading: false})
+        localStorage.setItem('wordCloud-groupOptions', JSON.stringify(groupOptions))
+      })
+    }
   }
 
   handleChange = (selectedGroup) => {
-    this.setState({ selectedGroup })
-    this.props.setSelectedGroup(selectedGroup)
+    this.props.setSelectedGroup(selectedGroup.label)
   }
 
   render() {
-    const { selectedGroup } = this.props
     const { groupOptions, loading } = this.state
+    const selectedGroup = { value: this.props.selectedGroup, label: this.props.selectedGroup }
     return (
       <div className='GroupSelector'>
-        {loading && <div>lololoading</div> }
+        {loading && <div className='loader'/> }
         {!loading &&
           <Select
             value={selectedGroup}

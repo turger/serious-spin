@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {getFennicaGroupedData ,getFennicaAllData} from './services/firebase'
+import { getFennicaGroupedData } from './services/firebase'
 import {mapCloudWordsPerYear} from './utils/utils'
 import Cloud from 'react-d3-cloud'
 import './WordCloud.css'
@@ -18,27 +18,37 @@ class WordCloud extends Component {
   }
 
   componentDidMount() {
-    const selectedYear = this.props.selectedYear || '2018'
-    const selectedGroup = this.props.selectedGroup || '00 General Terms'
-    if (selectedGroup === 'allGroups') {
-      getFennicaAllData(selectedYear).then(wordData =>
-        this.setState({wordData})
-      )
-    } else {
-      getFennicaGroupedData(selectedGroup, selectedYear).then(wordData =>
-        this.setState({wordData})
-      )
-    }
+    this.fetchData()
     window.addEventListener("resize", this.updateDimensions)
     this.updateDimensions()
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.selectedYear !== this.props.selectedYear || prevProps.selectedGroup !== this.props.selectedGroup) {
+      this.fetchData()
+    }
   }
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateDimensions)
   }
 
+  fetchData = () => {
+    const selectedYear = this.props.selectedYear || '2018'
+    const selectedGroup = this.props.selectedGroup || '00 General Terms'
+    getFennicaGroupedData(selectedGroup, selectedYear).then(wordData => {
+      this.setState({wordData})
+    })
+
+  }
+
   updateDimensions = () => {
-    this.setState({width: window.innerWidth})
+    this.setState({width: window.innerWidth-30})
+  }
+
+  onWordClick = word => {
+    const link = `https://finna.fi/Search/Results?limit=0&type=AllFields&filter%5B%5D=~building%3A%221%2FNLF%2Farto%2F%22&lookfor0[]=${word.text}`
+    window.open(link, '_blank')
   }
 
   render() {
@@ -50,7 +60,7 @@ class WordCloud extends Component {
           data={data}
           fontSizeMapper={fontSizeMapper}
           rotate={rotate}
-          onWordClick={(word) => console.log('wordClick', word)}
+          onWordClick={this.onWordClick}
           padding={10}
           width={this.state.width}
           height={this.state.height}
