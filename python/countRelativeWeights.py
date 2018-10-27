@@ -1,7 +1,5 @@
-import json
+import json, sys
 from math import pow
-
-PATH_TO_FENNICA_ALL_JSON_FILE = '/home/jviding/Documents/fennicaAll.json'
 
 # FILE HANDLING #
 
@@ -24,8 +22,13 @@ def getJsonFromFile(file_path):
 		print(e)
 		print('Failed to get json from file ' + file_path)
 		return False
+if len(sys.argv) < 2:
+    print("Usage: %s fennica-all.json"%sys.argv[0])
+    sys.exit()
 
-data_all = getJsonFromFile('/home/jviding/Documents/all-data-pretty.json')
+data_all = getJsonFromFile(sys.argv[1])
+PATH_TO_FENNICA_ALL_JSON_FILE = './fennica-graph.json'
+
 fennica_all = data_all['fennica-all']
 
 # DATA HANDLING #
@@ -64,4 +67,4 @@ def changeWordWeightsToRelative(json_data):
 	return json_data
 
 fennica_all_relative = changeWordWeightsToRelative(fennica_all)
-print(fennica_all_relative['1600'])
+writeJsonToFile(fennica_all_relative, 'fennica-graph.json')
