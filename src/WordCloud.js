@@ -3,8 +3,7 @@ import { getFennicaGroupedData } from './services/firebase'
 import {mapCloudWordsPerYear} from './utils/utils'
 import Cloud from 'react-d3-cloud'
 import './WordCloud.css'
-
-const rotate = word => word.value % 45
+import './Loader.css'
 
 class WordCloud extends Component {
   constructor(props) {
@@ -12,18 +11,20 @@ class WordCloud extends Component {
     this.state = {
       wordData: null,
       width: 500,
-      height: 500
+      height: 500,
+      loading: true
     }
   }
 
   componentDidMount() {
     this.updateDimensions()
     this.fetchData()
-    window.addEventListener("resize", this.updateDimensions)
+    window.addEventListener('resize', this.updateDimensions)
   }
 
   componentDidUpdate(prevProps) {
     if(prevProps.selectedYear !== this.props.selectedYear || prevProps.selectedGroup !== this.props.selectedGroup) {
+      this.setState({loading: true})
       this.fetchData()
     }
 
@@ -32,18 +33,32 @@ class WordCloud extends Component {
   fontSizeMapper = word => {
     const wordAmount = Object.keys(this.state.wordData).length
     const num = 10-Math.ceil(wordAmount/100)
-    return Math.ceil(Math.log2(word.value) * num)
+    return Math.ceil(Math.log2(word.value) * num)+1
+  }
+
+  rotate = word => {
+    const rand = Math.floor((Math.random() * 4) + 1)
+    switch(rand) {
+      case 0:
+        return -(word.value % 30)
+      case 1:
+        return -(word.value % 60)
+      case 2:
+        return word.value % 30
+      default:
+        return word.value % 60
+    }
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.updateDimensions)
+    window.removeEventListener('resize', this.updateDimensions)
   }
 
   fetchData = () => {
     const selectedYear = this.props.selectedYear || '2018'
     const selectedGroup = this.props.selectedGroup || '00 General Terms'
     getFennicaGroupedData(selectedGroup, selectedYear).then(wordData => {
-      this.setState({wordData: mapCloudWordsPerYear(wordData)})
+      this.setState({wordData: mapCloudWordsPerYear(wordData), loading: false})
     })
 
   }
@@ -58,19 +73,22 @@ class WordCloud extends Component {
   }
 
   render() {
-    const {wordData} = this.state
-    if (!wordData) return null
+    const {wordData, loading} = this.state
     return (
-      <div className="WordCloud">
+      <div className='WordCloud'>
+      {loading && <div className='loader'/> }
+      {!loading &&
         <Cloud
           data={wordData}
           fontSizeMapper={this.fontSizeMapper}
-          rotate={rotate}
+          rotate={this.rotate}
           onWordClick={this.onWordClick}
-          padding={10}
+          padding={20}
           width={this.state.width}
           height={this.state.height}
+          font={'Fredoka One'}
         />
+      }
       </div>
     )
   }

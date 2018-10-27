@@ -15,10 +15,10 @@ const fb = firebase.initializeApp(config)
 export const getFennicaGroupedData = (group, year) =>
   fb.database().ref(`fennica-grouped/${group}/${year}`).once('value').then((snapshot) => snapshot.val())
 
-
 export const getFennicaAllData = (year) =>
   fb.database().ref(`fennica-all${year}`).once('value').then((snapshot) => snapshot.val())
 
+// TODO: get group options data from own fb database ref
 export const getAllGroups = () =>
   fb.database().ref(`fennica-grouped`).once('value').then((snapshot) => {
     const groups = snapshot.val()

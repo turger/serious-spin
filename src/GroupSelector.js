@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
-import './GroupSelector.css'
 import { getAllGroups } from './services/firebase'
+import './GroupSelector.css'
+import './Loader.css'
 
 class GroupSelector extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      groupOptions: [],
+      groupOptions: null,
       loading: true
     }
   }
