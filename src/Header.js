@@ -5,7 +5,7 @@ import './Header.css'
 const Header = () =>
   <div className='Header'>
     <img className='Header__logo' src={Logo} alt='Cloud logo'/>
-    <div className='Header__title'>WordCloud</div>
+    <div className='Header__title'>FennicaTrendCloud</div>
   </div>
 
 export default Header
