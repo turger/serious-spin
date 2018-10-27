@@ -1,4 +1,4 @@
-# Baron Chill W Cloud
+# FennicaCloud
 
 Rather cool word cloud article trend visualizer.
 
