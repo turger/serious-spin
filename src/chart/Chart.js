@@ -44,7 +44,7 @@ export default class MyComponent extends React.Component {
         <div className='Chart'>
           <div className='Chart__header'>
             <div className='Chart__selectedWord'>Selected word: {this.props.selectedWord}</div>
-            <a className='Chart__button' href={link} target="_blank">Search finna for articles</a>
+            <a className='Chart__button' href={link} target="_blank">Search Finna for articles</a>
           </div>
           {loading && <div className='spinner'/>}
           {!loading && data &&
@@ -52,6 +52,8 @@ export default class MyComponent extends React.Component {
               data={data.map((point) => ({...point, active: point.x === activePoint.x ? true : false}))}
               viewBoxHeight={125}
               pathColor='#fff'
+              labelsCountY={0}
+              labelsFormatY={()=>{''}}
             />
           }
         </div>
