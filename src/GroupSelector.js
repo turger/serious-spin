@@ -14,17 +14,11 @@ class GroupSelector extends Component {
   }
 
   componentDidMount() {
-    const localStorageOptions = localStorage.getItem('wordCloud-groupOptions')
-    if (localStorageOptions) {
-      const groupOptions = JSON.parse(localStorageOptions)
+    getAllGroups().then(groupNames => {
+      const groupOptions = groupNames.map(groupName => ({ value: groupName, label: groupName }))
       this.setState({groupOptions, loading: false})
-    } else {
-      getAllGroups().then(groupNames => {
-        const groupOptions = groupNames.map(groupName => ({ value: groupName, label: groupName }))
-        this.setState({groupOptions, loading: false})
-        localStorage.setItem('wordCloud-groupOptions', JSON.stringify(groupOptions))
-      })
-    }
+      localStorage.setItem('wordCloud-groupOptions', JSON.stringify(groupOptions))
+    })
   }
 
   handleChange = (selectedGroup) => {

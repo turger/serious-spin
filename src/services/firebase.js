@@ -18,12 +18,8 @@ export const getFennicaGroupedData = (group, year) =>
 export const getFennicaGraphData = () =>
   fb.database().ref(`graph`).once('value').then((snapshot) => snapshot.val())
 
-export const getFennicaAllData = (year) =>
-  fb.database().ref(`fennica-all${year}`).once('value').then((snapshot) => snapshot.val())
+export const getFennicaAllDataPerYear = (year) =>
+  fb.database().ref(`fennica-all/${year}`).once('value').then((snapshot) => snapshot.val())
 
-// TODO: get group options data from own fb database ref
 export const getAllGroups = () =>
-  fb.database().ref(`fennica-grouped`).once('value').then((snapshot) => {
-    const groups = snapshot.val()
-    return Object.keys(groups).map(groupName => groupName)
-  })
+  fb.database().ref(`fennica-group-labels`).once('value').then((snapshot) => snapshot.val())

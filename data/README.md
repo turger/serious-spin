@@ -42,7 +42,7 @@ Scripts will create two datasets as json `fennica-data.json` and `fennica-graph.
 10. Import resulted json to Firebase Real-time Database with command line tool. See instructions here https://github.com/FirebaseExtended/firebase-import "Obtaining Service account file" and generate a key.
 
     * The first command you should run looks something like this, with your own firebase app details. This command inserts json to the database *root*:  
-    `firebase-import --database_url https://YOURAPP.firebaseio-demo.com --path / --json fennica-data.json --service_account /path/to/your/service_account.json`
+    `firebase-import --database_url https://YOURAPP.firebaseio.com --path / --json fennica-data.json --service_account /path/to/your/service_account.json`
     
     * Lastly add also graph data to firebase tp path /graph (not to the root /!!)
-    `firebase-import --database_url https://YOURAPP.firebaseio-demo.com --path /graph --json fennica-graph.json --service_account /path/to/your/service_account.json`
+    `firebase-import --database_url https://YOURAPP.firebaseio.com --path /graph --json fennica-graph.json --service_account /path/to/your/service_account.json`
