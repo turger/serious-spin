@@ -10,6 +10,7 @@ with open('data.csv', newline='', encoding='utf-8') as f:
     i = 0
     fennica_grouped = {}
     fennica_all = {}
+    fennica_all_group_labels = []
     for row in reader:
         i += 1
         pub_uri = row[1]
@@ -29,7 +30,10 @@ with open('data.csv', newline='', encoding='utf-8') as f:
                     continue
                 pref = g.preferredLabel(URIRef(s), 'en')
                 if len(pref) > 0:
-                    group_labels.append(unidecode(pref[0][1]).replace('.', ''))
+                    group_label = unidecode(pref[0][1]).replace('.', '')
+                    group_labels.append(group_label)
+                    if (group_label not in fennica_all_group_labels):
+                        fennica_all_group_labels.append(group_label)
             for group in group_labels:
                 if group not in fennica_grouped:
                     fennica_grouped[group] = {}
@@ -53,7 +57,7 @@ with open('data.csv', newline='', encoding='utf-8') as f:
         if i % 25000 == 0: # printing some primitive progress updates
             print(i)
 
-combined = {"fennica-grouped": fennica_grouped, "fennica-all": fennica_all}
+combined = {"fennica-grouped": fennica_grouped, "fennica-all": fennica_all, "fennica-group-labels": fennica_all_group_labels}
 json_str = json.dumps(combined)
 
 with open('fennica-data.json', 'w') as outfile:
