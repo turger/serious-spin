@@ -32,3 +32,5 @@ REACT_APP_MESSAGINGSENDERID=
 
 `yarn build-fb`
 
+## See app working in Firebase
+https://serious-spin.firebaseapp.com
