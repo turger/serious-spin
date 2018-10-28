@@ -17,7 +17,11 @@ class WordCloud extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if(this.props.selectedGroup === nextProps.selectedGroup && this.props.selectedYear === nextProps.selectedYear && this.state.loading === false) {
+    if(this.props.selectedGroup === nextProps.selectedGroup &&
+      this.props.selectedYear === nextProps.selectedYear &&
+      this.state.loading === nextState.loading &&
+      this.state.width === nextState.width
+    ) {
       return false
     } else {
       return true

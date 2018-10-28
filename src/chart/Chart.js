@@ -52,7 +52,7 @@ export default class MyComponent extends React.Component {
               data={data.map((point) => ({...point, active: point.x === activePoint.x ? true : false}))}
               viewBoxHeight={125}
               pathColor='#fff'
-              labelsCountY={0}
+              labelsCountY={10}
               labelsFormatY={()=>{''}}
             />
           }
