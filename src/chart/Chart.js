@@ -43,7 +43,7 @@ export default class MyComponent extends React.Component {
       this.props.selectedWord &&
         <div className='Chart'>
           <div className='Chart__header'>
-            <div className='Chart__selectedWord'>Selected word: {this.props.selectedWord}</div>
+            <div className='Chart__selectedWord'>{this.props.selectedWord}</div>
             <a className='Chart__button' href={link} target="_blank">Search Finna for articles</a>
           </div>
           {loading && <div className='spinner'/>}
