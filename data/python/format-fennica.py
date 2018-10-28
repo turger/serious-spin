@@ -56,6 +56,6 @@ with open('data.csv', newline='', encoding='utf-8') as f:
 combined = {"fennica-grouped": fennica_grouped, "fennica-all": fennica_all}
 json_str = json.dumps(combined)
 
-with open('all-data-pretty.json', 'w') as outfile:
+with open('fennica-data.json', 'w') as outfile:
     json.dump(combined, outfile)
     outfile.close()

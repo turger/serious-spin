@@ -3,17 +3,23 @@
 ## Get data from Fennica
 
 1. Download `fennica.hdt` and `fennica.hdt.index` from http://data.nationallibrary.fi/download/
+
 2. Move hdt-datas to some folder f.ex. Documents/Fennica/
+
 3. Get latest hdt-java from https://github.com/rdfhdt/hdt-java/releases
+
 4. Extract hdt-java to same folder with hdt-datas
+
 5. Install hdt-java with instructions found from readme
+
 6. Go to hdt-fuseki folder and install that too with readme instructions
+
 7. Go back to folder with hdt-datas and start fuseki with command `hdt-java-2.0/hdt-fuseki/bin/hdtEndpoint.sh --hdt fennica.hdt /dataset`
+
 8. Get data as CSV with command:
 ``` 
 curl http://localhost:3030/dataset/sparql -X POST --data 'query=PREFIX+skos%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23%3E%0APREFIX+schema%3A+%3Chttp%3A%2F%2Fschema.org%2F%3E%0APREFIX+rdf%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0APREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0ASELECT+DISTINCT+%3Fname+%3Finst+%3Fyear+(GROUP_CONCAT(DISTINCT+%3Fconc%3B+separator%3D%22%2C+%22)+AS+%3Fyso)+WHERE+%7B%0A++%3Fwork+schema%3Aname+%3Fname+.%0A++%3Fwork+schema%3AworkExample+%3Finst+.%0A++%3Finst+schema%3AdatePublished+%3Fyear+.%0A++%3Fwork+schema%3Aabout+%3Fconc+.%0A++%23SERVICE+%3Chttp%3A%2F%2Fapi.dev.finto.fi%2Fsparql%3E+%7B%0A++%23++%3Fconc+skos%3AprefLabel+%3Flabel+.%0A++%23++FILTER(lang(%3Flabel)+%3D+'en')%0A++%23%7D%0A++FILTER(STRSTARTS(STR(%3Fconc)%2C+%22http%3A%2F%2Fwww.yso.fi%2Fonto%2Fyso%2F%22))%0A%7D+GROUP+BY+%3Fname+%3Finst+%3Fyso+%3Fyear&output=csv’ > data.csv
 ```
-
 Here's also the same query as pretty SPARQL:
 ```
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
@@ -29,5 +35,14 @@ SELECT DISTINCT ?name ?inst ?year (GROUP_CONCAT(DISTINCT ?conc; separator=", ") 
 } GROUP BY ?name ?inst ?yso ?year
 ```
 
-9. Format data with script formatFennicaData.py
-10. Import resulted json to Firebase Realtime Database
+9. Format data with two scripts found under data/python-directory:
+`format-fennica.py` and `countRelativeWeights.py`
+Scripts will create two datasets as json `fennica-data.json` and `fennica-graph.json`
+ 
+10. Import resulted json to Firebase Real-time Database with command line tool. See instructions here https://github.com/FirebaseExtended/firebase-import "Obtaining Service account file" and generate a key.
+
+    * The first command you should run looks something like this, with your own firebase app details. This command inserts json to the database *root*:  
+    `firebase-import --database_url https://YOURAPP.firebaseio-demo.com --path / --json fennica-data.json --service_account /path/to/your/service_account.json`
+    
+    * Lastly add also graph data to firebase tp path /graph (not to the root /!!)
+    `firebase-import --database_url https://YOURAPP.firebaseio-demo.com --path /graph --json fennica-graph.json --service_account /path/to/your/service_account.json`
