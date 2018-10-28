@@ -27,7 +27,7 @@ export default class MyComponent extends React.Component {
   fetchData() {
     getFennicaGraphData().then((wordData) => {
       var data = Object.keys(wordData)
-        .filter((year) => { return parseInt(year) >= 1980 })
+        .filter((year) => { return parseInt(year) >= 1980 && parseInt(year) <= (new Date()).getFullYear() })
         .map((year) => {
           return {x: parseInt(year), y: wordData[year][this.props.selectedWord] || 0 }
         })
