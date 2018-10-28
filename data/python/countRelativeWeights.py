@@ -26,10 +26,8 @@ if len(sys.argv) < 2:
     print("Usage: %s fennica-all.json"%sys.argv[0])
     sys.exit()
 
-data_all = getJsonFromFile(sys.argv[1])
+fennica_all = getJsonFromFile(sys.argv[1])
 PATH_TO_FENNICA_ALL_JSON_FILE = './fennica-graph.json'
-
-fennica_all = data_all['fennica-all']
 
 # DATA HANDLING #
 

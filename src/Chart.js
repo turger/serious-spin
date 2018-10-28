@@ -1,6 +1,6 @@
 import React from 'react'
 import LineChart from 'react-svg-line-chart'
-import { getFennicaGraphData } from '../services/firebase'
+import { getFennicaGraphData } from './services/firebase'
 import './Chart.css'
 
 export default class MyComponent extends React.Component {
@@ -44,7 +44,7 @@ export default class MyComponent extends React.Component {
         <div className='Chart'>
           <div className='Chart__header'>
             <div className='Chart__selectedWord'>{this.props.selectedWord}</div>
-            <a className='Chart__button' href={link} target="_blank">Search Finna for articles</a>
+            <a className='Chart__button' href={link} target="_blank" rel="noopener noreferrer">Search Finna for articles</a>
           </div>
           {loading && <div className='spinner'/>}
           {!loading && data &&

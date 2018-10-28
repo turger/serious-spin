@@ -18,7 +18,7 @@
 
 8. Get data as CSV with command:
 ``` 
-curl http://localhost:3030/dataset/sparql -X POST --data 'query=PREFIX+skos%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23%3E%0APREFIX+schema%3A+%3Chttp%3A%2F%2Fschema.org%2F%3E%0APREFIX+rdf%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0APREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0ASELECT+DISTINCT+%3Fname+%3Finst+%3Fyear+(GROUP_CONCAT(DISTINCT+%3Fconc%3B+separator%3D%22%2C+%22)+AS+%3Fyso)+WHERE+%7B%0A++%3Fwork+schema%3Aname+%3Fname+.%0A++%3Fwork+schema%3AworkExample+%3Finst+.%0A++%3Finst+schema%3AdatePublished+%3Fyear+.%0A++%3Fwork+schema%3Aabout+%3Fconc+.%0A++%23SERVICE+%3Chttp%3A%2F%2Fapi.dev.finto.fi%2Fsparql%3E+%7B%0A++%23++%3Fconc+skos%3AprefLabel+%3Flabel+.%0A++%23++FILTER(lang(%3Flabel)+%3D+'en')%0A++%23%7D%0A++FILTER(STRSTARTS(STR(%3Fconc)%2C+%22http%3A%2F%2Fwww.yso.fi%2Fonto%2Fyso%2F%22))%0A%7D+GROUP+BY+%3Fname+%3Finst+%3Fyso+%3Fyear&output=csv’ > data.csv
+curl http://localhost:3030/dataset/sparql -X POST --data 'query=PREFIX+skos%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23%3E%0APREFIX+schema%3A+%3Chttp%3A%2F%2Fschema.org%2F%3E%0APREFIX+rdf%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0APREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0ASELECT+DISTINCT+%3Fname+%3Finst+%3Fyear+(GROUP_CONCAT(DISTINCT+%3Fconc%3B+separator%3D%22%2C+%22)+AS+%3Fyso)+WHERE+%7B%0A++%3Fwork+schema%3Aname+%3Fname+.%0A++%3Fwork+schema%3AworkExample+%3Finst+.%0A++%3Finst+schema%3AdatePublished+%3Fyear+.%0A++%3Fwork+schema%3Aabout+%3Fconc+.%0A++%23SERVICE+%3Chttp%3A%2F%2Fapi.dev.finto.fi%2Fsparql%3E+%7B%0A++%23++%3Fconc+skos%3AprefLabel+%3Flabel+.%0A++%23++FILTER(lang(%3Flabel)+%3D+'en')%0A++%23%7D%0A++FILTER(STRSTARTS(STR(%3Fconc)%2C+%22http%3A%2F%2Fwww.yso.fi%2Fonto%2Fyso%2F%22))%0A%7D+GROUP+BY+%3Fname+%3Finst+%3Fyso+%3Fyear&output=csv' > data.csv
 ```
 Here's also the same query as pretty SPARQL:
 ```
@@ -35,14 +35,22 @@ SELECT DISTINCT ?name ?inst ?year (GROUP_CONCAT(DISTINCT ?conc; separator=", ") 
 } GROUP BY ?name ?inst ?yso ?year
 ```
 
-9. Format data with two scripts found under data/python-directory:
-`format-fennica.py` and `countRelativeWeights.py`
-Scripts will create two datasets as json `fennica-data.json` and `fennica-graph.json`
- 
-10. Import resulted json to Firebase Real-time Database with command line tool. See instructions here https://github.com/FirebaseExtended/firebase-import "Obtaining Service account file" and generate a key.
+9. Get yso turtle data from http://finto.fi/yso/fi/ (bottom of the page)
 
-    * The first command you should run looks something like this, with your own firebase app details. This command inserts json to the database *root*:  
-    `firebase-import --database_url https://YOURAPP.firebaseio.com --path / --json fennica-data.json --service_account /path/to/your/service_account.json`
+10. Format data with two scripts found under data/python-directory:
+`format-fennica.py` and `countRelativeWeights.py`
+These scripts will take some time. Relax and take some refreshing drinks while waiting.
+Scripts will create four datasets in json format:
+    * `fennica-grouped.json` 
+    * `fennica-all.json` 
+    * `fennica-group-labels.json` 
+    * `fennica-graph.json`
+ 
+11. Import resulted json to Firebase Real-time Database with command line tool. See instructions here https://github.com/FirebaseExtended/firebase-import "Install" and "Obtaining Service account file" and generate a key.
+
+    Then import all datasets to Firebase, run python script `importDataToFirebase.py` (this might take a while)
+    * Run with these params to import everything (OVERWRITES ALL DATA!):   
+      `python3 importDataToFirebase.py <YOUR-APP-NAME> <your-path-to-service-account.json>`  
+    * OR import just one file by adding third arg (OVERWRITES SELECTED DATA):  
+      `python3 importDataToFirebase.py <YOUR-APP-NAME> <your-path-to-service-account.json> fennica-group-labels` 
     
-    * Lastly add also graph data to firebase tp path /graph (not to the root /!!)
-    `firebase-import --database_url https://YOURAPP.firebaseio.com --path /graph --json fennica-graph.json --service_account /path/to/your/service_account.json`

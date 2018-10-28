@@ -1,6 +1,6 @@
 from rdflib import Graph, RDF, URIRef, Literal
 import csv
-import json, re, simplejson
+import json, re
 from unidecode import unidecode
 
 g = Graph().parse('yso-skos.ttl', format='turtle')
@@ -10,7 +10,7 @@ with open('data.csv', newline='', encoding='utf-8') as f:
     i = 0
     fennica_grouped = {}
     fennica_all = {}
-    fennica_all_group_labels = []
+    fennica_group_labels = []
     for row in reader:
         i += 1
         pub_uri = row[1]
@@ -32,8 +32,8 @@ with open('data.csv', newline='', encoding='utf-8') as f:
                 if len(pref) > 0:
                     group_label = unidecode(pref[0][1]).replace('.', '')
                     group_labels.append(group_label)
-                    if (group_label not in fennica_all_group_labels):
-                        fennica_all_group_labels.append(group_label)
+                    if (group_label not in fennica_group_labels):
+                        fennica_group_labels.append(group_label)
             for group in group_labels:
                 if group not in fennica_grouped:
                     fennica_grouped[group] = {}
@@ -57,9 +57,16 @@ with open('data.csv', newline='', encoding='utf-8') as f:
         if i % 25000 == 0: # printing some primitive progress updates
             print(i)
 
-combined = {"fennica-grouped": fennica_grouped, "fennica-all": fennica_all, "fennica-group-labels": fennica_all_group_labels}
-json_str = json.dumps(combined)
+combined = {"fennica-grouped": fennica_grouped, "fennica-all": fennica_all, "fennica-group-labels": fennica_group_labels}
 
-with open('fennica-data.json', 'w') as outfile:
-    json.dump(combined, outfile)
+with open('fennica-grouped.json', 'w') as outfile:
+    json.dump(fennica_grouped, outfile)
+    outfile.close()
+
+with open('fennica-all.json', 'w') as outfile:
+    json.dump(fennica_all, outfile)
+    outfile.close()
+
+with open('fennica-group-labels.json', 'w') as outfile:
+    json.dump(fennica_group_labels, outfile)
     outfile.close()

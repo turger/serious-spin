@@ -15,13 +15,21 @@ class GroupSelector extends Component {
 
   componentDidMount() {
     getAllGroups().then(groupNames => {
-      const groupOptions = groupNames.map(groupName => ({ value: groupName, label: groupName }))
+      const sortedGroupNames = this.sortGroups(groupNames)
+      const groupOptions = sortedGroupNames.map(groupName => ({ value: groupName, label: groupName }))
       this.setState({groupOptions, loading: false})
       localStorage.setItem('wordCloud-groupOptions', JSON.stringify(groupOptions))
     })
   }
 
-  handleChange = (selectedGroup) => {
+  sortGroups = groups => {
+    const sortedArray = Object.keys(groups)
+      .sort((a, b) => groups[a].localeCompare(groups[b]))
+      .map(key => groups[key])
+    return sortedArray
+  }
+
+  handleChange = selectedGroup => {
     this.props.setSelectedGroup(selectedGroup.label)
   }
 

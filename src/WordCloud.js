@@ -26,7 +26,6 @@ class WordCloud extends Component {
     } else {
       return true
     }
-    return false
   }
 
   componentDidMount() {

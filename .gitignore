@@ -21,3 +21,6 @@ yarn-error.log*
 
 .idea/*
 .firebase/*
+data.csv
+yso-skos.ttl
+data/python/*.json

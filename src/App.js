@@ -4,7 +4,7 @@ import YearSlider from './YearSlider'
 import WordCloud from './WordCloud'
 import GroupSelector from './GroupSelector'
 import './App.css'
-import Chart from './chart/Chart.js'
+import Chart from './Chart.js'
 
 class App extends Component {
   constructor(props) {

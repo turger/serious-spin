@@ -2,6 +2,12 @@
 
 Rather cool word cloud article trend visualizer.
 
+## Before anything
+Create a new project to Firebase https://console.firebase.google.com
+
+## Format data
+Follow instructions from data/README.md before setup.
+
 ## Setup
 
 Add firebase:  
